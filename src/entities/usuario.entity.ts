@@ -52,9 +52,9 @@ export default class UsuarioEntity {
 
     public toJSON() {
         return {
-            id: this.id,
-            nome: this.nome,
-            email: this.email,
+            id: this.props.id,
+            nome: this.props.nome,
+            email: this.props.email,
         };
     }
 }

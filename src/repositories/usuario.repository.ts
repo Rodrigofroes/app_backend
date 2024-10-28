@@ -1,9 +1,10 @@
+import { UsuarioOutputDTO } from "../dtos/usuario.output.dto";
 import UsuarioEntity from "../entities/usuario.entity";
 import prisma from "../prisma/client";
 import { IUsuarioRepository } from "./interfaces/usuario.interface";
 
 export default class UsuarioRepository implements IUsuarioRepository {
-    public async create(usuario: UsuarioEntity): Promise<UsuarioEntity> {
+    public async create(usuario: UsuarioEntity): Promise<UsuarioOutputDTO> {
         const usuarioCreated = await prisma.usuario.create({
             data: {
                 usu_UUID: usuario.id,
@@ -13,22 +14,19 @@ export default class UsuarioRepository implements IUsuarioRepository {
             }
         });
 
-        return await UsuarioEntity.create(usuarioCreated.usu_nome, usuarioCreated.usu_email, usuarioCreated.usu_senha);
+        if (!usuarioCreated) {
+            throw new Error('Erro ao criar o usuário');
+        }
+
+        return this.toMap(usuarioCreated);
     }
 
-    public async findAll(): Promise<UsuarioEntity[]> {
+    public async findAll(): Promise<UsuarioOutputDTO[]> {
         const usuarios = await prisma.usuario.findMany();
-
-        const usuariosEntities = await Promise.all(
-            usuarios.map(async (usuario) => {
-                return await UsuarioEntity.create(usuario.usu_nome, usuario.usu_email, usuario.usu_senha);
-            })
-        );
-
-        return usuariosEntities;
+        return this.toMapArray(usuarios);
     }
 
-    public async findByUUID(uuid: string): Promise<UsuarioEntity | null> {
+    public async findByUUID(uuid: string): Promise<UsuarioOutputDTO | null> {
         const usuario = await prisma.usuario.findUnique({
             where: {
                 usu_UUID: uuid
@@ -39,10 +37,10 @@ export default class UsuarioRepository implements IUsuarioRepository {
             return null;
         }
 
-        return await UsuarioEntity.create(usuario.usu_nome, usuario.usu_email, usuario.usu_senha);
+        return this.toMap(usuario);
     }
 
-    public async update(usuario: UsuarioEntity): Promise<UsuarioEntity> {
+    public async update(usuario: UsuarioEntity): Promise<UsuarioOutputDTO> {
         const usuarioExists = await prisma.usuario.findUnique({
             where: {
                 usu_UUID: usuario.id
@@ -64,15 +62,30 @@ export default class UsuarioRepository implements IUsuarioRepository {
             }
         });
 
-        return await UsuarioEntity.create(usuarioUpdated.usu_nome, usuarioUpdated.usu_email, usuarioUpdated.usu_senha);
+        return this.toMap(usuarioUpdated);
     }
 
-    public async delete(usuario: UsuarioEntity): Promise<void> {
-        let id = "2f657a57-38e1-4c69-957c-07d2f72c3a32";
+    public async delete(uuid: string): Promise<void> {
         await prisma.usuario.delete({
             where: {
-                usu_UUID: id
+                usu_UUID: uuid
             }
         });
+
+        return;
+    }
+
+    // Método para mapear um único usuario do banco para UsuarioOutputDTO
+    private toMap(usuario: any): UsuarioOutputDTO {
+        return {
+            id: usuario.usu_UUID,
+            nome: usuario.usu_nome,
+            email: usuario.usu_email
+        };
+    }
+
+    // Método para mapear uma lista de usuarios do banco para UsuarioOutputDTO[]
+    private toMapArray(usuarios: any[]): UsuarioOutputDTO[] {
+        return usuarios.map(usuario => this.toMap(usuario));
     }
 }

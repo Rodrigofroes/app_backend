@@ -17,6 +17,25 @@ export default class CategoriaController {
         }
     }
 
+    public async findByUUID(req: Request, res: Response): Promise<Response> {
+        try {
+            let { uuid } = req.params;
+            if (uuid) {
+                let categoriaRepository = new CategoriaRepository();
+                let categoria = await categoriaRepository.findByUUID(uuid);
+                if (categoria) {
+                    return res.status(200).json(categoria);
+                } else {
+                    return res.status(404).json({ message: 'Categoria não encontrada' });
+                }
+            } else {
+                return res.status(400).json({ message: 'O campo UUID é obrigatório' });
+            }
+        } catch (err: any) {
+            return res.status(500).json({ error: err.message });
+        }
+    }
+
     public async criar(req: Request, res: Response): Promise<Response> {
         try {
             let { nome } = req.body;
@@ -45,13 +64,19 @@ export default class CategoriaController {
             if (uuid && nome) {
                 let categoriaEntity = CategoriaEntity.update(uuid, nome);
                 let categoriaRepository = new CategoriaRepository();
-                let categoriaAtualizada = await categoriaRepository.update(categoriaEntity);
-                if (categoriaAtualizada) {
-                    return res.status(200).json({
-                        message: 'Categoria atualizada com sucesso'
-                    });
+
+                let categoria = await categoriaRepository.findByUUID(uuid);
+                if (categoria) {
+                    let categoriaAtualizada = await categoriaRepository.update(categoriaEntity);
+                    if (categoriaAtualizada) {
+                        return res.status(200).json({
+                            message: 'Categoria atualizada com sucesso'
+                        });
+                    } else {
+                        return res.status(400).json({ message: 'Erro ao atualizar a categoria' });
+                    }
                 } else {
-                    return res.status(400).json({ message: 'Erro ao atualizar a categoria' });
+                    return res.status(404).json({ message: 'Categoria não encontrada' });
                 }
             } else {
                 return res.status(400).json({ message: 'Os campos UUID e nome são obrigatórios' });
@@ -63,14 +88,21 @@ export default class CategoriaController {
 
     public async deletar(req: Request, res: Response): Promise<Response> {
         try {
-            let { uuid } = req.body;
+            let { uuid } = req.params;
             if (uuid) {
                 let categoriaEntity = CategoriaEntity.delete(uuid);
                 let categoriaRepository = new CategoriaRepository();
-                await categoriaRepository.delete(categoriaEntity);
-                return res.status(200).json({
-                    message: 'Categoria deletada com sucesso'
-                });
+
+                let categoria = await categoriaRepository.findByUUID(uuid);
+                if (categoria) {
+                    await categoriaRepository.delete(categoria.id);
+                    return res.status(200).json({
+                        message: 'Categoria deletada com sucesso'
+                    });
+                } else {
+                    return res.status(404).json({ message: 'Categoria não encontrada' });
+                }
+
             } else {
                 return res.status(400).json({ message: 'O campo UUID é obrigatório' });
             }

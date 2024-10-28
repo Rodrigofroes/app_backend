@@ -39,8 +39,8 @@ export default class CategoriaEntity {
 
     public toJSON() {
         return {
-            id: this.id,
-            nome: this.nome
+            id: this.props.id,
+            nome: this.props.nome
         };
     }
 }

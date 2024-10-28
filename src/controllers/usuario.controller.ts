@@ -82,13 +82,13 @@ export default class UsuarioController {
 
     public async delete(req: Request, res: Response): Promise<Response> {
         try {
-            let { uuid } = req.body;
+            let { uuid } = req.params;
             if (uuid) {
                 let usuarioRepository = new UsuarioRepository();
                 let usuario = await usuarioRepository.findByUUID(uuid);
-                console.log(usuario);
+
                 if (usuario) {
-                    await usuarioRepository.delete(usuario);
+                    await usuarioRepository.delete(usuario.id);
                     return res.status(200).json({
                         message: 'Usuário deletado com sucesso'
                     });

@@ -10,6 +10,12 @@ router.get('/categoria', (req, res) => {
     crtl.listar(req, res);
 });
 
+router.get('/categoria/:uuid', (req, res) => {
+    // #swagger.tags = ['Categoria']
+    // #swagger.summary = 'Endpoint para buscar uma categoria pelo UUID'
+    crtl.findByUUID(req, res);
+});
+
 router.post('/categoria', (req, res) => {
     // #swagger.tags = ['Categoria']
     // #swagger.summary = 'Endpoint para criar uma nova categoria'
@@ -22,7 +28,7 @@ router.put('/categoria', (req, res) => {
     crtl.atualizar(req, res);
 });
 
-router.delete('/categoria', (req, res) => {
+router.delete('/categoria/:uuid', (req, res) => {
     // #swagger.tags = ['Categoria']
     // #swagger.summary = 'Endpoint para deletar uma categoria'
     crtl.deletar(req, res);
