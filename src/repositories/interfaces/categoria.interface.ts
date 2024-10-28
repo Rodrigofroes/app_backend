@@ -1,4 +1,4 @@
-import { CategoriaOutputDTO } from "../../dtos/categoria.controller";
+import { CategoriaOutputDTO } from "../../dtos/categoria.output";
 import CategoriaEntity from "../../entities/categoria.entity";
 
 export interface ICategoriaRepository {
