@@ -1,4 +1,4 @@
-import { CategoriaOutputDTO } from "../dtos/categoria.output";
+import { CategoriaOutputDTO } from "../dtos/categoria.output.dto";
 import { UsuarioOutputDTO } from "../dtos/usuario.output.dto";
 import CategoriaEntity from "../entities/categoria.entity";
 import prisma from "../prisma/client";
