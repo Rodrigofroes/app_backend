@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export type UsuarioProps = {
     id: string;
     nome: string;
@@ -8,12 +10,23 @@ export type UsuarioProps = {
 export default class UsuarioEntity {
     private constructor(private readonly props: UsuarioProps) { }
 
-    public static create(nome: string, email: string, senha: string): UsuarioEntity {
+    public static async create(nome: string, email: string, senha: string): Promise<UsuarioEntity> {
+        const hashedPassword = await bcrypt.hash(senha, 10);
         return new UsuarioEntity({
             id: crypto.randomUUID().toString(),
             nome,
             email,
-            senha
+            senha: hashedPassword,
+        });
+    }
+
+    public static async update(id: string, nome: string, email: string, senha: string): Promise<UsuarioEntity> {
+        const hashedPassword = await bcrypt.hash(senha, 10);
+        return new UsuarioEntity({
+            id,
+            nome,
+            email,
+            senha: hashedPassword,
         });
     }
 
@@ -31,5 +44,17 @@ export default class UsuarioEntity {
 
     public get senha(): string {
         return this.props.senha;
+    }
+
+    public async validarSenha(senha: string): Promise<boolean> {
+        return bcrypt.compare(senha, this.props.senha);
+    }
+
+    public toJSON() {
+        return {
+            id: this.id,
+            nome: this.nome,
+            email: this.email,
+        };
     }
 }

@@ -15,6 +15,20 @@ export default class CategoriaEntity {
         });
     }
 
+    public static update(id: string, nome: string): CategoriaEntity {
+        return new CategoriaEntity({
+            id,
+            nome
+        });
+    }
+
+    public static delete(id: string): CategoriaEntity {
+        return new CategoriaEntity({
+            id,
+            nome: ''
+        });
+    }
+
     public get id(): string {
         return this.props.id;
     }

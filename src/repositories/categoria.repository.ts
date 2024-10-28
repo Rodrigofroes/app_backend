@@ -7,6 +7,7 @@ export default class CategoriaRepository implements ICategoriaRepository {
         // Criação de uma nova categoria usando Prisma
         const categoriaCreated = await prisma.categoria.create({
             data: {
+                cat_UUID: categoria.id,
                 cat_nome: categoria.nome
             }
         });
