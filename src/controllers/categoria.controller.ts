@@ -21,7 +21,7 @@ export default class CategoriaController {
         try {
             let { nome } = req.body;
             if (nome) {
-                let catergoriaEntity = new CategoriaEntity("", nome)
+                let catergoriaEntity = CategoriaEntity.create(nome);
                 let categoriaRepository = new CategoriaRepository();
                 let novaCategoria = await categoriaRepository.create(catergoriaEntity);
                 if (novaCategoria) {
@@ -43,7 +43,7 @@ export default class CategoriaController {
         try {
             let { uuid, nome } = req.body;
             if (uuid && nome) {
-                let categoriaEntity = new CategoriaEntity(uuid, nome);
+                let categoriaEntity = CategoriaEntity.update(uuid, nome);
                 let categoriaRepository = new CategoriaRepository();
                 let categoriaAtualizada = await categoriaRepository.update(categoriaEntity);
                 if (categoriaAtualizada) {
@@ -65,7 +65,7 @@ export default class CategoriaController {
         try {
             let { uuid } = req.body;
             if (uuid) {
-                let categoriaEntity = new CategoriaEntity(uuid, "");
+                let categoriaEntity = CategoriaEntity.delete(uuid);
                 let categoriaRepository = new CategoriaRepository();
                 await categoriaRepository.delete(categoriaEntity);
                 return res.status(200).json({
