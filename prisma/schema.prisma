@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model usuario {
+  usu_id           Int         @id @default(autoincrement()) // Identificador interno
+  usu_UUID         String      @unique @default(cuid()) // UUID exposto externamente
+  usu_nome         String      @db.VarChar(255)
+  usu_email        String      @unique @db.VarChar(255) // Email único para identificação
+  usu_senha        String      @db.VarChar(255)
+  usu_criadoem     DateTime    @default(now())
+  usu_ativo        Boolean     @default(true)
+  despesas         despesa[]   // Relacionamento com despesa
+  servicos         servico[]   // Relacionamento com serviço
+  relatorios       relatorio[] // Relacionamento com relatório
+}
+
+model categoria {
+  cat_id           Int       @id @default(autoincrement()) // Identificador interno
+  cat_UUID         String    @unique @default(cuid()) // UUID exposto externamente
+  cat_nome         String    @db.VarChar(255)
+  cat_criadoem     DateTime  @default(now())  
+  cat_ativo        Boolean   @default(true)
+  despesas         despesa[] // Relacionamento com despesa
+}
+
+model despesa {
+  des_id           Int        @id @default(autoincrement()) // Identificador interno
+  des_UUID         String     @unique @default(cuid()) // UUID exposto externamente
+  des_descricao    String     @db.VarChar(255)
+  des_valor        Float
+  des_data         DateTime
+  des_criadoem     DateTime   @default(now())
+  des_ativo        Boolean    @default(true)
+
+  // Relacionamento com usuário
+  usuario          usuario    @relation(fields: [des_usu_id], references: [usu_id])
+  des_usu_id       Int
+  
+  // Relacionamento com categoria
+  categoria        categoria  @relation(fields: [des_cat_id], references: [cat_id])
+  des_cat_id       Int
+  
+  // Relacionamento opcional com relatório
+  relatorio        relatorio? @relation(fields: [relatorioRel_id], references: [rel_id])
+  relatorioRel_id  Int?
+}
+
+model tipo_servico {
+  tps_id           Int       @id @default(autoincrement()) // Identificador interno
+  tps_UUID         String    @unique @default(cuid()) // UUID exposto externamente
+  tps_nome         String    @db.VarChar(255)
+  tps_criadoem     DateTime  @default(now())
+  tps_ativo        Boolean   @default(true)
+  servicos         servico[] // Relacionamento com serviço
+}
+
+model servico {
+  ser_id           Int          @id @default(autoincrement()) // Identificador interno
+  ser_UUID         String       @unique @default(cuid()) // UUID exposto externamente
+  ser_descricao    String       @db.VarChar(255)
+  ser_data         DateTime     @db.Timestamp
+  ser_valor        Float
+  ser_criadoem     DateTime     @default(now())
+  ser_ativo        Boolean      @default(true)
+  
+  // Relacionamento com usuário
+  usuario          usuario      @relation(fields: [ser_usu_id], references: [usu_id])
+  ser_usu_id       Int
+
+  // Relacionamento com tipo_servico
+  tipo_servico     tipo_servico @relation(fields: [ser_tps_id], references: [tps_id])
+  ser_tps_id       Int
+}
+
+model relatorio {
+  rel_id           Int       @id @default(autoincrement()) // Identificador interno
+  rel_UUID         String    @unique @default(cuid()) // UUID exposto externamente
+  rel_criadoem     DateTime  @default(now())
+  rel_ativo        Boolean   @default(true)
+  
+  // Relacionamento com usuário
+  usuario          usuario   @relation(fields: [rel_usu_id], references: [usu_id])
+  rel_usu_id       Int
+  
+  rel_link         String    @db.VarChar(255)
+  despesas         despesa[] // Relacionamento com despesa
+}
