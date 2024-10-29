@@ -13,6 +13,13 @@ export default class TipoServicoEntity {
         });
     }
 
+    public static update(id: string, descricao: string): TipoServicoEntity {
+        return new TipoServicoEntity({
+            id,
+            descricao
+        });
+    }
+
     public get id(): string {
         return this.props.id;
     }
