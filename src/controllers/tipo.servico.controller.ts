@@ -11,7 +11,7 @@ export default class TipoServicoController {
                 const tipoServicoRepository = new TipoServicoRepository();
                 const tipoServico = await tipoServicoRepository.create(tipoServicoEntity);
                 if (tipoServico) {
-                    return res.status(201).json({ message: 'Tipo de serviço criado com sucesso', });
+                    return res.status(201).json({ message: 'Tipo de serviço criado com sucesso' });
                 } else {
                     return res.status(500).json({ message: 'Erro ao criar o tipo de serviço' });
                 }

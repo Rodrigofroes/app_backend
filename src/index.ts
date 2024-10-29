@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import categoriaRoute from "./routes/categoria.route";
 import usuarioRoute from "./routes/usuario.route";
 import tipoServicoRoute from './routes/tipo.servico.route';
+import servicoRoute from './routes/servico.route';
 
 import outputFile from '../swagger_output.json';
 
@@ -17,6 +18,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputFile));
 app.use("/api", categoriaRoute);
 app.use("/api", usuarioRoute);
 app.use("/api", tipoServicoRoute);
+app.use("/api", servicoRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

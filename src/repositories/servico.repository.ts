@@ -20,7 +20,12 @@ export default class ServicoRepository implements IServicoRepository {
     }
 
     public async findAll(): Promise<ServicoOutputDTO[]> {
-        const servicos = await prisma.servico.findMany();
+        const servicos = await prisma.servico.findMany({
+            include: {
+                usuario: true,
+                tipo_servico: true,
+            },
+        });
 
         return this.toMapArray(servicos);
     }
@@ -29,6 +34,10 @@ export default class ServicoRepository implements IServicoRepository {
         const servico = await prisma.servico.findUnique({
             where: {
                 ser_UUID: uuid,
+            },
+            include: {
+                usuario: true,
+                tipo_servico: true,
             },
         });
 
@@ -71,6 +80,17 @@ export default class ServicoRepository implements IServicoRepository {
             data: servico.ser_data,
             usuarioId: servico.ser_usu_id,
             tipoServicoID: servico.ser_tps_id,
+            usuario: {
+                id: servico.usuario.usu_id,
+                uuid: servico.usuario.usu_UUID,
+                nome: servico.usuario.usu_nome,
+                email: servico.usuario.usu_email,
+            },
+            tipoServico: {
+                id: servico.tipo_servico.tps_id,
+                uuid: servico.tipo_servico.tps_UUID,
+                nome: servico.tipo_servico.tps_nome,
+            }
         };
     }
 

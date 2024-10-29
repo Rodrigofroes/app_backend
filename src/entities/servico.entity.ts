@@ -11,22 +11,25 @@ export default class ServicoEntity {
     private constructor(private readonly props: ServicoProps) { }
 
     public static create(descricao: string, valor: number, data: Date, usuarioId: number, tipoServicoID: number): ServicoEntity {
+        let dataFormatada = new Date(data);
+
         return new ServicoEntity({
             id: crypto.randomUUID().toString(),
             descricao,
             valor,
-            data,
+            data: dataFormatada,
             usuarioId,
             tipoServicoID
         });
     }
 
     public static update(id: string, descricao: string, valor: number, data: Date, usuarioId: number, tipoServicoID: number): ServicoEntity {
+        let dataFormatada = new Date(data);
         return new ServicoEntity({
             id,
             descricao,
             valor,
-            data,
+            data: dataFormatada,
             usuarioId,
             tipoServicoID
         });

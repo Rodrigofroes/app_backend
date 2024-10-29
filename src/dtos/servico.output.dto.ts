@@ -6,4 +6,15 @@ export interface ServicoOutputDTO {
     data: Date;
     usuarioId: number;
     tipoServicoID: number;
+    usuario?: {
+        id: number;
+        uuid: string;
+        nome: string;
+        email: string;
+    };
+    tipoServico?: {
+        id: number;
+        uuid: string;
+        nome: string;
+    };
 }

@@ -80,6 +80,7 @@ model servico {
   // Relacionamento opcional com cliente
   cliente       Cliente? @relation(fields: [clienteId], references: [id])
   clienteId     Int?
+   // Relacionamento com usuário
 }
 
 model relatorio {
