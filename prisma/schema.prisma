@@ -17,7 +17,6 @@ model usuario {
   usu_ativo    Boolean     @default(true)
   despesas     despesa[] // Relacionamento com despesa
   servicos     servico[] // Relacionamento com serviço
-  relatorios   relatorio[] // Relacionamento com relatório
 }
 
 model categoria {
@@ -45,10 +44,6 @@ model despesa {
   // Relacionamento com categoria
   categoria  categoria @relation(fields: [des_cat_id], references: [cat_id])
   des_cat_id Int
-
-  // Relacionamento opcional com relatório
-  relatorio       relatorio? @relation(fields: [relatorioRel_id], references: [rel_id])
-  relatorioRel_id Int?
 }
 
 model tipo_servico {
@@ -83,19 +78,6 @@ model servico {
    // Relacionamento com usuário
 }
 
-model relatorio {
-  rel_id       Int      @id @default(autoincrement()) // Identificador interno
-  rel_UUID     String   @unique @default(cuid()) // UUID exposto externamente
-  rel_criadoem DateTime @default(now())
-  rel_ativo    Boolean  @default(true)
-
-  // Relacionamento com usuário
-  usuario    usuario @relation(fields: [rel_usu_id], references: [usu_id])
-  rel_usu_id Int
-
-  rel_link String    @db.VarChar(255)
-  despesas despesa[] // Relacionamento com despesa
-}
 
 model Cliente {
   id       Int    @id @default(autoincrement())
