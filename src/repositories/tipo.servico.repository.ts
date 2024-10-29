@@ -58,7 +58,8 @@ export default class TipoServicoRepository implements ITipoServicoRepository {
     // Método para mapear um único usuario do banco para UsuarioOutputDTO
     private toMap(servico: any): TipoServicoOutputDTO {
         return {
-            id: servico.tps_UUID,
+            id: servico.tps_id,
+            uuid: servico.tps_UUID,
             nome: servico.tps_nome,
         };
     }

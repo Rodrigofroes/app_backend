@@ -1,4 +1,5 @@
 export interface CategoriaOutputDTO {
-    id: string;
+    id: number;
+    uuid: string;
     nome: string;
 }

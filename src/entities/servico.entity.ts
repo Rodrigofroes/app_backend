@@ -21,6 +21,17 @@ export default class ServicoEntity {
         });
     }
 
+    public static update(id: string, descricao: string, valor: number, data: Date, usuarioId: number, tipoServicoID: number): ServicoEntity {
+        return new ServicoEntity({
+            id,
+            descricao,
+            valor,
+            data,
+            usuarioId,
+            tipoServicoID
+        });
+    }
+
     public get id(): string {
         return this.props.id;
     }

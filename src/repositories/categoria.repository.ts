@@ -71,7 +71,8 @@ export default class CategoriaRepository implements ICategoriaRepository {
     // Método para mapear um único usuario do banco para UsuarioOutputDTO
     private toMap(categoria: any): CategoriaOutputDTO {
         return {
-            id: categoria.cat_UUID,
+            id: categoria.cat_id,
+            uuid: categoria.cat_UUID,
             nome: categoria.cat_nome,
         };
     }

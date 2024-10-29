@@ -78,7 +78,8 @@ export default class UsuarioRepository implements IUsuarioRepository {
     // Método para mapear um único usuario do banco para UsuarioOutputDTO
     private toMap(usuario: any): UsuarioOutputDTO {
         return {
-            id: usuario.usu_UUID,
+            id: usuario.usu_id,
+            uuid: usuario.usu_UUID,
             nome: usuario.usu_nome,
             email: usuario.usu_email
         };

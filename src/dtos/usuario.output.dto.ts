@@ -1,5 +1,6 @@
 export interface UsuarioOutputDTO {
-    id: string;
+    id: number;
+    uuid: string;
     nome: string;
     email: string;
 }

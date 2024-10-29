@@ -93,9 +93,9 @@ export default class CategoriaController {
                 let categoriaEntity = CategoriaEntity.delete(uuid);
                 let categoriaRepository = new CategoriaRepository();
 
-                let categoria = await categoriaRepository.findByUUID(uuid);
+                let categoria = await categoriaRepository.findByUUID(categoriaEntity.id);
                 if (categoria) {
-                    await categoriaRepository.delete(categoria.id);
+                    await categoriaRepository.delete(categoriaEntity.id);
                     return res.status(200).json({
                         message: 'Categoria deletada com sucesso'
                     });
