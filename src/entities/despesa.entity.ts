@@ -1,42 +1,62 @@
+export type DespesaProps = {
+    id: string;
+    descricao: string;
+    valor: number;
+    data: Date;
+    usuarioId: number;
+    categoriaId: number;
+};
+
 export default class DespesaEntity {
 
-    private id: string;
-    private descricao: string;
-    private valor: number;
-    private data: Date;
-    private usuarioId: number;
-    private categoriaId: number;
+    private constructor(private readonly props: DespesaProps) { }
 
-    private constructor(id: string, descricao: string, valor: number, data: Date, usuarioId: number, categoriaId: number) {
-        this.id = id;
-        this.descricao = descricao;
-        this.valor = valor;
-        this.data = data;
-        this.usuarioId = usuarioId;
-        this.categoriaId = categoriaId;
+    public static create(descricao: string, valor: number, data: Date, usuarioId: number, categoriaId: number): DespesaEntity {
+        let dataFormatada = new Date(data);
+
+        return new DespesaEntity({
+            id: crypto.randomUUID().toString(),
+            descricao,
+            valor,
+            data: dataFormatada,
+            usuarioId,
+            categoriaId
+        });
     }
 
-    public getId(): string {
-        return this.id;
+    public static update(id: string, descricao: string, valor: number, data: Date, usuarioId: number, categoriaId: number): DespesaEntity {
+        let dataFormatada = new Date(data);
+        return new DespesaEntity({
+            id,
+            descricao,
+            valor,
+            data: dataFormatada,
+            usuarioId,
+            categoriaId
+        });
     }
 
-    public getDescricao(): string {
-        return this.descricao;
+    public get id(): string {
+        return this.props.id;
     }
 
-    public getValor(): number {
-        return this.valor;
+    public get descricao(): string {
+        return this.props.descricao;
     }
 
-    public getData(): Date {
-        return this.data;
+    public get valor(): number {
+        return this.props.valor;
     }
 
-    public getUsuarioId(): number {
-        return this.usuarioId;
+    public get data(): Date {
+        return this.props.data;
     }
 
-    public getCategoriaId(): number {
-        return this.categoriaId;
+    public get usuario(): number {
+        return this.props.usuarioId;
+    }
+
+    public get categoria(): number {
+        return this.props.categoriaId;
     }
 }

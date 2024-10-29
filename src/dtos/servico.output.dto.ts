@@ -1,3 +1,6 @@
+import { TipoServicoOutputDTO } from "./tipo.servico.output.dto";
+import { UsuarioOutputDTO } from "./usuario.output.dto";
+
 export interface ServicoOutputDTO {
     id: number;
     uuid: string;
@@ -6,15 +9,6 @@ export interface ServicoOutputDTO {
     data: Date;
     usuarioId: number;
     tipoServicoID: number;
-    usuario?: {
-        id: number;
-        uuid: string;
-        nome: string;
-        email: string;
-    };
-    tipoServico?: {
-        id: number;
-        uuid: string;
-        nome: string;
-    };
+    usuario?: UsuarioOutputDTO;
+    tipoServico?: TipoServicoOutputDTO;
 }
